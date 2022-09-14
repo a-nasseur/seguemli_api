@@ -1,10 +1,8 @@
 const { User, validate } = require('../models/user');
-const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const jwt = require('jsonwebtoken');
 
 
 router.post('/register', async (req, res) => {
