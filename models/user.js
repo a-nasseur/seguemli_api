@@ -7,13 +7,13 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        required: true,
         minlength: 5,
         maxlength: 50
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
         minlength: 5,
         maxlength: 250
@@ -24,11 +24,12 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024,
     },
-    isAdmin: Boolean
+    isAdmin: Boolean,
+    isTechnician: Boolean
 });
 
 userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign(_.pick(this, ['id', 'name', 'email']), process.env.JWT_SECRET);
+    const token = jwt.sign(_.pick(this, ['id', 'name', 'email', 'isAdmin']), process.env.JWT_SECRET);
     return token;
 }
 
