@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const registration = require('./routes/registration');
 const auth = require('./routes/auth');
+const customers = require('./routes/customers');
+const repairs = require('./routes/repairs');
 const PORT = 3000 || process.env.PORT
 require('dotenv').config();
 const app = express();
@@ -41,8 +43,10 @@ app.use(morgan('dev'));
 // Helmet Security middleware
 app.use(helmet());
 
-app.use('/api/users', registration);
-app.use('/api/users', auth);
+app.use('/api/v1/users', registration);
+app.use('/api/v1/users', auth);
+app.use('/api/v1/customers', customers);
+app.use('/api/v1/repairs', repairs);
 
 
 app.listen(PORT, () => {
