@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/tayb2808/repositories/seguemli_api
+    - /bin/cp * $DEPLOYPATH
