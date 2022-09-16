@@ -9,13 +9,24 @@ const auth = require('../middleware/auth');
 
 router.post('/add-repair', auth, async (req, res) => {
     const { error } = validateRepair(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).json({
+        success: false,
+        errorMesssage: error.details[0].message
+    });
 
-    let customer = await Customer.findOne({ phone: req.body.phone });
-    if(!customer) return res.status(400).send('no customer with this phone number, please register the customer first');
+    let customer = await Customer.findByIdAndUpdate({ _id: req.body.id });
+    if(!customer) return res.status(400).json({
+        success: false,
+        errorMesssage: 'no customer with this phone number, please register the customer first'
+    });
 
-    await customer.repairs.push(_.pick(req.body, ['item', 'category', 'serialNumber', 'damageDescription']));
-    res.status(201).send(_.pick(customer, ['firstName', 'lastName', 'email', 'phone', 'repairs']))
+    await customer.repairs.push(_.pick(req.body, ['item', 'category', 'serialNumber', 'brand', 'damageDescription']));
+    await customer.save();
+    res.status(201).json({
+        success: true,
+        message: 'New repair added successfully',
+        data: (_.pick(customer, ['firstName', 'lastName', 'email', 'phone', 'repairs']))
+    })
 });
 
 

@@ -32,8 +32,8 @@ mongoose.connect(process.env.DB_URI, options, (err) => {
 
 
 // Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
 
 // Cors middleware
 app.use(cors());

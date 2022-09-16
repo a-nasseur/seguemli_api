@@ -9,6 +9,11 @@ const repairSchema = new mongoose.Schema({
         minlength: 4,
         maxlength: 50
     },
+    brand: {
+        type: String,
+        required: true,
+        minlength: 1
+    },
     category: {
         type: String,
         required: true, 
@@ -88,9 +93,11 @@ const validateRepair = (repair) => {
     const schema = Joi.object({
         item: Joi.string().min(4).max(50).required(),
         category: Joi.string().min(4).max(50).required(),
+        brand: Joi.string().min(1).required(),
         serialNumber: Joi.string().min(3).max(250),
         damageDescription: Joi.string().min(5).required(),
-        phone: Joi.string().length(10).required(),
+        // phone: Joi.string().length(10).required(),
+        id: Joi.string()
     });
 
     return schema.validate(repair);
@@ -100,3 +107,5 @@ const validateRepair = (repair) => {
 exports.Customer = Customer;
 exports.validateCustomer = validateCustomer;
 exports.validateRepair = validateRepair;
+
+// *8UDV8@f3uy!
