@@ -12,6 +12,7 @@ const admin = require('../middleware/admin');
 
 // ADD NEW CUSTOMER
 router.post('/add-customer', auth, async (req, res) => {
+    console.log(req.user);
     const { error } = validateCustomer(req.body);
     if(error) return res.status(400).json({
         success: false,
