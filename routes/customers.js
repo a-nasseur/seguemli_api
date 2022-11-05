@@ -1,4 +1,5 @@
 const { Customer, validateCustomer } = require('../models/customer');
+const { History } = require('../models/history');
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
@@ -12,21 +13,32 @@ const admin = require('../middleware/admin');
 
 // ADD NEW CUSTOMER
 router.post('/add-customer', auth, async (req, res) => {
-    console.log(req.user);
+    // Post customer data validation
     const { error } = validateCustomer(req.body);
     if(error) return res.status(400).json({
         success: false,
         errorMessage: error.details[0].message
     });
 
+    // Check if customer already exist in the dabase
+    // using the unique phone number as unique entry
     let customer = await Customer.findOne({ phone: req.body.phone });
     if(customer) return res.status(400).json({
         success: false,
         errorMessage: 'A customer is already registered with this phone number'
     });
 
+    // adding the customer to the database
     let entry = new Customer(_.pick(req.body, ['firstName', 'lastName', 'email', 'phone']));
     entry = await entry.save();
+
+    // Storing the API call in the history database
+    let history = new History({
+        user: req.user.name,
+        route: req.route.path,
+        userAgent: req.headers['user-agent']
+    });
+        history = await history.save();
 
     res.status(201).json({
         success: true,

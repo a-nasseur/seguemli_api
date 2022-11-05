@@ -8,7 +8,7 @@ const registration = require('./routes/registration');
 const auth = require('./routes/auth');
 const customers = require('./routes/customers');
 const repairs = require('./routes/repairs');
-const PORT = 3000 || process.env.PORT
+const PORT = 3001 || process.env.PORT
 require('dotenv').config();
 const app = express();
 
@@ -36,7 +36,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
 // Cors middleware
-app.use(cors());
+app.use(cors({
+    exposedHeaders: ['x-auth-token']
+}));
 
 app.use(morgan('dev'));
 
